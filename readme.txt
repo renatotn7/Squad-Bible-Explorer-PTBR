@@ -15,3 +15,7 @@ Você pode inicializar este repositório com código de um projeto Subversion, M
 
 
 python load3.py --precisao 0 --versao r69  --questao "Como posso fazer o bem de acordo com o ensinamento de Cristo?"
+
+pytorch-transformers>=1.0.0
+Flask>=1.1.1
+Flask-Cors>=3.0.8
