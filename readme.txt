@@ -12,3 +12,6 @@ git remote add origin https://github.com/renatotn7/bert_glue.git
 git push -u origin main
 … Ou importe o código de outro repositório
 Você pode inicializar este repositório com código de um projeto Subversion, Mercurial ou TFS.
+
+
+python load3.py --precisao 0 --versao r69  --questao "Como posso fazer o bem de acordo com o ensinamento de Cristo?"
