@@ -1,0 +1,54 @@
+		18000	Quando ele chegou ao outro lado, à região dos gadarenos, foram ao seu encontro dois endemoninhados, que vinham dos sepulcros.
+18000	18001	Eles eram tão violentos que ninguém podia passar por aquele caminho.
+18001	18002	Então eles gritaram: Que queres conosco, Filho de Deus?
+18002	18003	Vieste aqui para nos atormentar antes do devido tempo?
+18003	18004	A certa distância deles estava pastando uma grande manada de porcos.
+18004	19000	Os demônios imploravam a Jesus: Se nos expulsas, manda-nos entrar naquela manada de porcos.
+19000	18006	Ele lhes disse: Vão!
+18006	18007	Eles saíram e entraram nos porcos, e toda a manada atirou-se precipício abaixo, em direção ao mar, e morreu afogada.
+18007	19002	Vendo o que acontecera, os que cuidavam dos porcos fugiram e contaram esses fatos, na cidade e nos campos, e o povo foi ver o que havia acontecido.
+19002	18009	Toda a cidade saiu ao encontro de Jesus, e quando o viram, suplicaram-lhe que saísse do território deles.
+		28000	Eles atravessaram o mar e foram para a região dos gerasenos.
+28000	28001	Quando Jesus desembarcou, um homem com um espírito imundo veio dos sepulcros ao seu encontro.
+28001	28002	Esse homem vivia nos sepulcros, e ninguém conseguia prendê-lo, nem mesmo com correntes; pois muitas vezes lhe haviam sido acorrentados pés e mãos, mas ele arrebentara as correntes e quebrara os ferros de seus pés.
+28002	28003	Ninguém era suficientemente forte para dominá-lo.
+28003	28004	Noite e dia ele andava gritando e cortando-se com pedras entre os sepulcros e nas colinas.
+28004	29003	Quando ele viu Jesus de longe, correu e prostrou-se diante dele, e gritou em alta voz: Que queres comigo, Jesus, Filho do Deus Altíssimo?
+29003	29004	Rogo-te por Deus que não me atormentes!
+29004	29005	Pois Jesus havia ordenado que o espírito imundo saísse daquele homem.
+29005	29006	Então Jesus lhe perguntou: Qual é o seu nome?
+29006	28009	Meu nome é Legião, respondeu ele, porque somos muitos.
+28009	28010	E implorava a Jesus, com insistência, que não os mandasse sair daquela região.
+28010	29007	Uma grande manada de porcos estava pastando numa colina próxima.
+29007	29000	Os demônios imploravam a Jesus: Se nos expulsas, manda-nos entrar naquela manada de porcos.
+29000	28013	Ele lhes deu permissão, e os espíritos imundos saíram e entraram nos porcos.
+28013	28014	A manada de cerca de dois mil porcos atirou-se precipício abaixo, em direção ao mar, e nele se afogou.
+28014	29008	Os que cuidavam dos porcos fugiram e contaram esses fatos na cidade e nos campos, e o povo foi ver o que havia acontecido.
+29008	29009	Quando se aproximaram de Jesus, viram que o homem de quem haviam saído os demônios estava assentado aos pés de Jesus, vestido e em perfeito juízo, e ficaram com medo.
+29009	28017	Os que o tinham visto contaram ao povo o que acontecera ao endemoninhado, e falaram também sobre os porcos.
+28017	28018	Então o povo começou a suplicar a Jesus que saísse do território deles.
+28018	28019	Quando Jesus estava entrando no barco, o homem que estivera endemoninhado suplicava-lhe que o deixasse ir com ele.
+28019	28020	Jesus não o permitiu, mas disse: Vá para casa, para a sua família e anuncie-lhes quanto o Senhor fez por você e como teve misericórdia de você.
+28020	28021	Então, aquele homem se foi e começou a anunciar em Decápolis quanto Jesus tinha feito por ele.
+28021	28022	Todos ficavam admirados.
+		38000	Navegaram para a região dos gerasenos que fica do outro lado do lago, frente à Galiléia.
+38000	38001	Quando Jesus pisou em terra, foi ao encontro dele um endemoninhado daquela cidade.
+38001	38002	Fazia muito tempo que aquele homem não usava roupas, nem vivia em casa alguma, mas nos sepulcros.
+38002	39003	Quando ele viu Jesus de longe, correu e prostrou-se diante dele, e gritou em alta voz: Que queres comigo, Jesus, Filho do Deus Altíssimo?
+39003	39004	Rogo-te por Deus que não me atormentes!
+39004	39005	Pois Jesus havia ordenado que o espírito imundo saísse daquele homem.
+39005	38006	Muitas vezes ele tinha se apoderado dele.
+38006	38007	Mesmo com os pés e as mãos acorrentados e entregue aos cuidados de guardas, quebrava as correntes, e era levado pelo demônio a lugares solitários.
+38007	39006	Então Jesus lhe perguntou: Qual é o seu nome?
+39006	38009	Legião, respondeu ele; porque muitos demônios haviam entrado nele.
+38009	38010	E imploravam-lhe que não os mandasse para o abismo.
+38010	39007	Uma grande manada de porcos estava pastando numa colina próxima.
+39007	38012	Os demônios imploraram a Jesus que lhes permitisse entrar neles, e Jesus lhes deu permissão.
+38012	38013	Saindo do homem, os demônios entraram nos porcos, e toda a manada atirou-se precipício abaixo em direção ao lago e se afogou.
+38013	39008	Vendo o que acontecera, os que cuidavam dos porcos fugiram e contaram esses fatos, na cidade e nos campos, e o povo foi ver o que havia acontecido.
+39008	39009	Quando se aproximaram de Jesus, viram que o homem de quem haviam saído os demônios estava assentado aos pés de Jesus, vestido e em perfeito juízo, e ficaram com medo.
+39009	38016	Os que o tinham visto contaram ao povo como o endemoninhado fora curado.
+38016	38017	Então, todo o povo da região dos gerasenos suplicou a Jesus que se retirasse, porque estavam dominados pelo medo.
+38017	38018	Ele entrou no barco e regressou.
+38018	38019	O homem de quem haviam saído os demônios suplicava-lhe que o deixasse ir com ele; mas Jesus o mandou embora, dizendo: Volte para casa e conte o quanto Deus lhe fez.
+38019	38020	Assim, o homem se foi e anunciou a toda a cidade o quanto Jesus tinha feito por ele.

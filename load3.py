@@ -5,7 +5,7 @@ from wordcloud import STOPWORDS, WordCloud
 from argparse import ArgumentParser, Namespace
 from decimal import Decimal
 import requests
-import pandas as pd
+
 import matplotlib.pyplot as plt
 resultados=""
 model_name = 'pierreguillou/bert-base-cased-squad-v1.1-portuguese'
@@ -76,7 +76,7 @@ for i in range(1,len(linhas)): #30):
     linha = linhas[i]
     coluna = linha.split(";")
     try:
-        f = open(versao+"/"+coluna[0] + "-" + re.sub('[^\w\s]', '', coluna[1]), "r")
+        f = open("evangCruzados"+"/"+versao+"/"+coluna[0] + "-" + re.sub('[^\w\s]', '', coluna[1]), "r")
         content= f.read()
         conteudo = re.sub(r'’|“|‘|”','',content)
         conteudo = re.sub(r'\d','',conteudo)
@@ -96,7 +96,7 @@ for i in range(1,len(linhas)): #30):
         if len(coluna[6]) !=0:
             content =content+"\n"+parseHbibonlineHtml2txt("jo",extraicapitulo(coluna[6]),extraiverp1(coluna[6]),extraiverp2(coluna[6]))     
         print(coluna[0] + " - " + coluna[1])
-        f = open(versao+"/"+coluna[0] + "-" + re.sub('[^\w\s]', '', coluna[1]), "w")
+        f = open("evangCruzados"+"/"+versao+"/"+coluna[0] + "-" + re.sub('[^\w\s]', '', coluna[1]), "w")
         f.write(content)
         f.close()
    

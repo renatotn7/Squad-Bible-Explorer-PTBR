@@ -1,0 +1,66 @@
+Gênesis	Gn	50	1533					
+Êxodo	Ex	40	1213					
+Levítico	Lv	27	859					
+Números	Nm	36	1288					
+Deuteronômio	Dt	34	959					
+Josué	Js	24	658					
+Juízes	Jz	21	619					
+Rute	Rt	4	85					
+1 Samuel	1Sm	31	811					
+2 Samuel	2Sm	24	695					
+1 Reis	1Rs	22	817					
+2 Reis	2Rs	25	719					
+1 Crônicas	1Cr	29	942					
+2 Crônicas	2Cr	36	822					
+Esdras	Ed	10	280					
+Neemias	Ne	13	406					
+Ester	Et	10	167					
+Jó	Jó	42	1070					
+Salmos	Sl	150	2461					
+Provérbios	Pv	31	915					
+Eclesiastes	Ec	12	222					
+Cantares	Ct	8	117					
+Isaías	Is	66	1292					
+Jeremias	Jr	52	1364					
+Lamentações	Lm	5	154					
+Ezequiel	Ez	48	1273					
+Daniel	Dn	12	357					
+Oseias	Os	14	197					
+Joel	Jl	3	73					
+Amós	Am	9	146					
+Obadias	Ob	1	21					
+Jonas	Jn	4	48					
+Miqueias	Mq	7	105					
+Naum	Na	3	47					
+Habacuque	Hc	3	56					
+Sofonias	Sf	3	53					
+Ageu	Ag	2	38					
+Zacarias	Zc	14	211					
+Malaquias	Ml	4	55					
+Mateus	Mt	28	1071					
+Marcos	Mc	16	678					
+Lucas	Lc	24	1151					
+João	Jo	21	879					
+Atos dos Apóstolos	At	28	1007					
+Romanos	Rm	16	433					
+1 Coríntios	1Co	16	437					
+2 Coríntios	2Co	13	256					
+Gálatas	Gl	6	149					
+Efésios	Ef	6	155					
+Filipenses	Fp	4	104					
+Colossenses	Cl	4	95					
+1 Tessalonicenses	1Ts	5	89					
+2 Tessalonicenses	2Ts	3	47					
+1 Timóteo	1Tm	6	113					
+2 Timóteo	2Tm	4	83					
+Tito	Tt	3	46					
+Filemom	Fm	1	25					
+Hebreus	Hb	13	303					
+Tiago	Tg	5	108					
+1 Pedro	1Pe	5	105					
+2 Pedro	2Pe	3	61					
+1 João	1Jo	5	105					
+2 João	2Jo	1	13					
+3 João	3Jo	1	15					
+Judas	Jd	1	25					
+Apocalipse	Ap	22	404					

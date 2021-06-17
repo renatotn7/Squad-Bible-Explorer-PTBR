@@ -1,253 +1,166 @@
+from argparse import ArgumentParser
+from collections import defaultdict
+import os
 import re
+import umap
+import hdbscan
+from typing import Any
+import numpy as np
+from sklearn.feature_extraction.text import CountVectorizer
+
+from utils.regex_clean_bib_files import regex_clean_file
+from utils.GraphSentencesNLP import Graph
+import sys
+import nltk
 from sentence_transformers import SentenceTransformer, util
-model = SentenceTransformer('D:\\0000python\\squadbert\\distiluse-base-multilingual-cased-v1')
+
+#Python program to print topological sorting of a DAG
+from collections import defaultdict
+
+#Class to represent a graph
+
+
+parser = ArgumentParser("Cluster Evangelhos")
+
+parser.add_argument("--versao",
+                    required=True,
+                    help="por enquanto acf ou nvi.")
+args = parser.parse_args()
+versao = args.versao
+
+
+#This code is contributed by Neelam Yadav
+
+
+model = SentenceTransformer('distiluse-base-multilingual-cased-v1')
+
 #kiri-ai/distiluse-base-multilingual-cased-et
+listtextos=[]
+f = open('passagensEv.csv', encoding="utf8")
+texto = f.read()
+linhas = texto.split("\n")
+f.close()
+for i in range(1, len(linhas)):  # 30):
 
-mylistMateus = ["Mateus1p1", "Mateus1p2", "Mateus2p1", "Mateus2p2", "Mateus2p3","Mateus3p1", "Mateus3p2","Mateus4p1", "Mateus4p2","Mateus5p1","Mateus5p2", "Mateus5p3",
-           "Mateus6p1","Mateus6p2","Mateus7p1","Mateus7p2","Mateus7p3","Mateus7p4","Mateus7p5","Mateus7p6","Mateus7p7",
-           "Mateus8p1","Mateus8p2","Mateus8p3","Mateus8p4","Mateus8p5","Mateus8p6","Mateus9p1","Mateus9p2","Mateus9p3","Mateus9p4","Mateus9p5","Mateus9p6",'Mateus10p1',
-           'Mateus11p1','Mateus11p2','Mateus11p3',"Mateus12p1","Mateus12p2","Mateus12p3","Mateus12p4","Mateus12p5","Mateus12p6","Mateus13p1","Mateus13p2","Mateus13p3",
-           "Mateus13p4","Mateus13p5","Mateus14p1","Mateus14p2","Mateus14p3"]
-           
+    content = ""
+    linha = linhas[i]
+    coluna = linha.split(";")
 
-mylistJoao = ["Joao1p1", "Joao1p2", "Joao1p3","Joao2p1", "Joao2p2","Joao3p1", "Joao3p2","Joao4p1", "Joao4p2", "Joao4p3", "Joao5p1", "Joao5p2"]
+    f = open("evangCruzados" + "/" + versao + "/" + coluna[0] + "-" + re.sub('[^\w\s]', '', coluna[1]), "r")
+    nome=re.sub('[^\w\s]', '', coluna[1])
+    content = f.read()
+    conteudo = re.sub(r'’|“|‘|”', '', content)
+    conteudo = re.sub(r'\d', '', conteudo)
+    conteudo = re.sub(r'\n\.', '\n', conteudo)
+    conteudo = re.sub(r'\n ', '\n', conteudo)
+    conteudo = re.sub(r'\r\n', '\n', conteudo)
 
-mylistMarcos = ["Marcos1p1", "Marcos1p2", "Marcos1p3","Marcos1p4", "Marcos1p5","Marcos1p6","Marcos2p1", "Marcos2p2", "Marcos2p3","Marcos2p4",
-"Marcos3p1", "Marcos3p2", "Marcos3p3","Marcos3p4","Marcos3p5",
-"Marcos4p1", "Marcos4p2", "Marcos4p3","Marcos4p4","Marcos4p5","Marcos5p1", "Marcos5p2"]
-
-
-mylistLucas = ["Lucas1p1", "Lucas1p2", "Lucas1p3","Lucas1p4", "Lucas1p5", "Lucas1p6",
-          "Lucas2p1", "Lucas2p2", "Lucas2p3","Lucas2p4", "Lucas2p5",
-          "Lucas3p1", "Lucas3p2", "Lucas3p3",
-          "Lucas4p1", "Lucas4p2", "Lucas4p3","Lucas4p4"]
-          
-simvalue=0.65          
-listamateusjoao=[]
-listamateusmarcos=[]
-listamateuslucas=[]
-listajoaomarcos=[]   
-listajoaolucas=[] 
-listamarcoslucas=[] 
-listaversiculos=[]
-listaversiculosv2=[]
-for mateus in mylistMateus:
-    f = open(mateus, encoding="utf8")
-    conteudo = re.sub(r'’|“|‘|”','',f.read())
-    conteudo = re.sub(r'\d','',conteudo)
-    conteudo = re.sub(r'\n\.','\n',conteudo)
-    conteudo = re.sub(r'\n ','\n',conteudo)
-    conteudo = re.sub(r'\r\n','\n',conteudo)
-    conteudo = re.sub(r'\n\n','\n',conteudo)
-    contextMateus = conteudo
+    while '  ' in conteudo:
+        conteudo = re.sub(r'  ', ' ', conteudo)
+    content = re.sub(r'\n\n', '\n', conteudo)
+    listtextos.append (f"{nome.strip()}-{content}")
     f.close()
-    for joao in mylistJoao:
-            f = open(joao, encoding="utf8")
-            conteudo = re.sub(r'’|“|‘|”','',f.read())
-            conteudo = re.sub(r'\d','',conteudo)
-            conteudo = re.sub(r'\n\.','\n',conteudo)
-            conteudo = re.sub(r'\n ','\n',conteudo)
-            conteudo = re.sub(r'\r\n','\n',conteudo)
-            conteudo = re.sub(r'\n\n','\n',conteudo)
-            contextJoao=conteudo
-            f.close()
-            if (mateus+","+joao) not in listamateusjoao:
-                similarity  = util.pytorch_cos_sim(model.encode(contextMateus), model.encode(contextJoao))
-                listamateusjoao.append(mateus+","+joao)
-                if similarity > simvalue:
-                    print(mateus+","+joao+" -  Similarity:", similarity)
-                    listaversiculos.append(mateus+","+joao)
 
 
-for mateus in mylistMateus:
-    f = open(mateus, encoding="utf8")
-    conteudo = re.sub(r'’|“|‘|”','',f.read())
-    conteudo = re.sub(r'\d','',conteudo)
-    conteudo = re.sub(r'\n\.','\n',conteudo)
-    conteudo = re.sub(r'\n ','\n',conteudo)
-    conteudo = re.sub(r'\r\n','\n',conteudo)
-    conteudo = re.sub(r'\n\n','\n',conteudo)
-    contextMateus = conteudo
-    f.close()
-    for marcos in mylistMarcos:
-                f = open(marcos, encoding="utf8")
-                conteudo = re.sub(r'’|“|‘|”','',f.read())
-                conteudo = re.sub(r'\d','',conteudo)
-                conteudo = re.sub(r'\n\.','\n',conteudo)
-                conteudo = re.sub(r'\n ','\n',conteudo)
-                conteudo = re.sub(r'\r\n','\n',conteudo)
-                conteudo = re.sub(r'\n\n','\n',conteudo)
-                contextMarcos=conteudo
-                f.close()
-                if (mateus+","+marcos) not in listamateusmarcos:
-                    similarity  = util.pytorch_cos_sim(model.encode(contextMateus), model.encode(contextMarcos))
-                    listamateusmarcos.append(mateus+","+marcos)
-                    if similarity > simvalue:
-                        print(mateus+","+marcos+" -  Similarity:", similarity)
-                        encontrou=0
-                        for i in range(0,len(listaversiculos)):
-                            if mateus in listaversiculos[i] and  marcos not in listaversiculos[i]:
-                                listaversiculos[i]= listaversiculos[i]+","+marcos
-                                encontrou=1
-                            if marcos in listaversiculos[i]  and  mateus not in listaversiculos[i] :
-                                listaversiculos[i]= listaversiculos[i]+","+mateus
-                                encontrou=1
-                        if encontrou==0:
-                            listaversiculos.append(mateus+","+marcos)
+embeddings = model.encode(listtextos, show_progress_bar=True)
+umap_embeddings = umap.UMAP(n_neighbors=15,
+                            n_components=5,
+                            metric='cosine').fit_transform(embeddings)
+cluster = hdbscan.HDBSCAN(min_cluster_size=5,
+                          metric='euclidean',
+                          cluster_selection_method='eom').fit(umap_embeddings)
+
+import matplotlib.pyplot as plt
+import pandas as pd
+# Prepare data
+umap_data = umap.UMAP(n_neighbors=15, n_components=2, min_dist=0.0, metric='cosine').fit_transform(embeddings)
+result = pd.DataFrame(umap_data, columns=['x', 'y'])
+result['labels'] = cluster.labels_
+
+# Visualize clusters
+fig, ax = plt.subplots(figsize=(20, 10))
+outliers = result.loc[result.labels == -1, :]
+clustered = result.loc[result.labels != -1, :]
+plt.scatter(outliers.x, outliers.y, color='#BDBDBD', s=1)
+plt.scatter(clustered.x, clustered.y, c=clustered.labels, s=1, cmap='hsv_r')
+plt.colorbar()
+plt.show()
+print('tam:'+ str(len(listtextos)))
+
+docs_df = pd.DataFrame(listtextos, columns=["Doc"])
+docs_df['Topic'] = cluster.labels_
+docs_df['Doc_ID'] = range(len(docs_df))
+docs_per_topic = docs_df.groupby(['Topic'], as_index = False).agg({'Doc': ' '.join})
+
+print(docs_per_topic)
 
 
-for mateus in mylistMateus:
-    f = open(mateus, encoding="utf8")
-    conteudo = re.sub(r'’|“|‘|”','',f.read())
-    conteudo = re.sub(r'\d','',conteudo)
-    conteudo = re.sub(r'\n\.','\n',conteudo)
-    conteudo = re.sub(r'\n ','\n',conteudo)
-    conteudo = re.sub(r'\r\n','\n',conteudo)
-    conteudo = re.sub(r'\n\n','\n',conteudo)
-    contextMateus = conteudo
-    f.close()
-    for lucas in mylistLucas:
-                    f = open(lucas, encoding="utf8")
-                    conteudo = re.sub(r'’|“|‘|”','',f.read())
-                    conteudo = re.sub(r'\d','',conteudo)
-                    conteudo = re.sub(r'\n\.','\n',conteudo)
-                    conteudo = re.sub(r'\n ','\n',conteudo)
-                    conteudo = re.sub(r'\r\n','\n',conteudo)
-                    conteudo = re.sub(r'\n\n','\n',conteudo)
+def c_tf_idf(documents, m, ngram_range=(1, 1)):
+    count = CountVectorizer(ngram_range=ngram_range, stop_words="english").fit(documents)
+    t = count.transform(documents).toarray()
+    w = t.sum(axis=1)
+    tf = np.divide(t.T, w)
+    sum_t = t.sum(axis=0)
+    idf = np.log(np.divide(m, sum_t)).reshape(-1, 1)
+    tf_idf = np.multiply(tf, idf)
 
-                    #print(conteudo)
-                    contextLucas = conteudo
-                    f.close()
-                    #if myItem in list:
-                    if (mateus+","+lucas) not in listamateuslucas:
-                        similarity  = util.pytorch_cos_sim(model.encode(contextMateus), model.encode(contextLucas))
-                        listamateuslucas.append(mateus+","+lucas)
-                        if similarity > simvalue:
-                            print(mateus+","+lucas+" -  Similarity:", similarity)
-                            for i in range(0,len(listaversiculos)):
-                                if mateus in listaversiculos[i] and  lucas not in listaversiculos[i]:
-                                    listaversiculos[i]= listaversiculos[i]+","+lucas
-                                    encontrou=1
-                                if lucas in listaversiculos[i] and  mateus not in listaversiculos[i]:
-                                    listaversiculos[i]= listaversiculos[i]+","+mateus
-                                    encontrou=1
-                            if encontrou==0:
-                                listaversiculos.append(mateus+","+lucas)
+    return tf_idf, count
 
 
+tf_idf, count = c_tf_idf(docs_per_topic.Doc.values, m=len(listtextos))
 
-for joao in mylistJoao:
-    f = open(joao, encoding="utf8")
-    conteudo = re.sub(r'’|“|‘|”','',f.read())
-    conteudo = re.sub(r'\d','',conteudo)
-    conteudo = re.sub(r'\n\.','\n',conteudo)
-    conteudo = re.sub(r'\n ','\n',conteudo)
-    conteudo = re.sub(r'\r\n','\n',conteudo)
-    conteudo = re.sub(r'\n\n','\n',conteudo)
-    contextJoao=conteudo
-    f.close()
-    for marcos in mylistMarcos:
-                f = open(marcos, encoding="utf8")
-                conteudo = re.sub(r'’|“|‘|”','',f.read())
-                conteudo = re.sub(r'\d','',conteudo)
-                conteudo = re.sub(r'\n\.','\n',conteudo)
-                conteudo = re.sub(r'\n ','\n',conteudo)
-                conteudo = re.sub(r'\r\n','\n',conteudo)
-                conteudo = re.sub(r'\n\n','\n',conteudo)
-                contextMarcos=conteudo
-                f.close()
-                if (joao+","+marcos) not in listajoaomarcos:
-                   similarity  = util.pytorch_cos_sim(model.encode(contextJoao), model.encode(contextMarcos))
-                   listajoaomarcos.append(joao+","+marcos)
-                   if similarity > simvalue:
-                       print(joao+","+marcos+" -  Similarity:", similarity)
-                       for i in range(0,len(listaversiculos)):
-                           if joao in listaversiculos[i] and  marcos not in listaversiculos[i]:
-                               listaversiculos[i]= listaversiculos[i]+","+marcos
-                               encontrou=1
-                           if marcos in listaversiculos[i] and  joao not in listaversiculos[i]:
-                               listaversiculos[i]= listaversiculos[i]+","+joao
-                               encontrou=1
-                       if encontrou==0:
-                           listaversiculos.append(joao+","+marcos)
+def extract_top_n_words_per_topic(tf_idf, count, docs_per_topic, n=20):
+    words = count.get_feature_names()
+    labels = list(docs_per_topic.Topic)
+    tf_idf_transposed = tf_idf.T
+    indices = tf_idf_transposed.argsort()[:, -n:]
+    top_n_words = {label: [(words[j], tf_idf_transposed[i][j]) for j in indices[i]][::-1] for i, label in enumerate(labels)}
+    return top_n_words
 
+def extract_topic_sizes(df):
+    topic_sizes = (df.groupby(['Topic'])
+                     .Doc
+                     .count()
+                     .reset_index()
+                     .rename({"Topic": "Topic", "Doc": "Size"}, axis='columns')
+                     .sort_values("Size", ascending=False))
+    return topic_sizes
 
-for joao in mylistJoao:
-    f = open(joao, encoding="utf8")
-    conteudo = re.sub(r'’|“|‘|”','',f.read())
-    conteudo = re.sub(r'\d','',conteudo)
-    conteudo = re.sub(r'\n\.','\n',conteudo)
-    conteudo = re.sub(r'\n ','\n',conteudo)
-    conteudo = re.sub(r'\r\n','\n',conteudo)
-    conteudo = re.sub(r'\n\n','\n',conteudo)
-    contextJoao=conteudo
-    f.close()
-    for lucas in mylistLucas:
-                    f = open(lucas, encoding="utf8")
-                    conteudo = re.sub(r'’|“|‘|”','',f.read())
-                    conteudo = re.sub(r'\d','',conteudo)
-                    conteudo = re.sub(r'\n\.','\n',conteudo)
-                    conteudo = re.sub(r'\n ','\n',conteudo)
-                    conteudo = re.sub(r'\r\n','\n',conteudo)
-                    conteudo = re.sub(r'\n\n','\n',conteudo)
+top_n_words = extract_top_n_words_per_topic(tf_idf, count, docs_per_topic, n=20)
+topic_sizes = extract_topic_sizes(docs_df); topic_sizes.head(10)
 
-                    #print(conteudo)
-                    contextLucas = conteudo
-                    f.close()
-                    #if myItem in list:
-                    if (joao+","+lucas) not in listajoaolucas:
-                        similarity  = util.pytorch_cos_sim(model.encode(contextJoao), model.encode(contextLucas))
-                        listajoaolucas.append(joao+","+lucas)
-                        if similarity > simvalue:
-                            print(joao+","+lucas+" -  Similarity:", similarity)
-                            for i in range(0,len(listaversiculos)):
-                                if joao in listaversiculos[i] and  lucas not in listaversiculos[i]:
-                                    listaversiculos[i]= listaversiculos[i]+","+lucas
-                                    encontrou=1
-                                if lucas in listaversiculos[i] and  joao not in listaversiculos[i]:
-                                    listaversiculos[i]= listaversiculos[i]+","+joao
-                                    encontrou=1
-                            if encontrou==0:
-                                listaversiculos.append(joao+","+lucas)
+print(topic_sizes)
+print(top_n_words[0])
+print(docs_df)
+pd.set_option('display.max_colwidth', None)
+clear = lambda: os.system('cls')
+inpt = "0"
+while inpt!= "sair":
+    if inpt=='':
+        inpt="0"
+    print(topic_sizes)
+    print(top_n_words[int(inpt)])
+    docfinal = docs_df.loc[(docs_df['Topic'] == int(inpt))]
+    print(docfinal['Doc'])
+    inpt = input("value ")
+    clear()
+clear()
+
+from bertopic import BERTopic
+
+topic_model = BERTopic(embedding_model=model, calculate_probabilities=True, verbose=True,nr_topics=20)
+topics, probs = topic_model.fit_transform(listtextos)
 
 
+freq = topic_model.get_topic_info();
+print(freq)
 
-for marcos in mylistMarcos:
-    f = open(marcos, encoding="utf8")
-    conteudo = re.sub(r'’|“|‘|”','',f.read())
-    conteudo = re.sub(r'\d','',conteudo)
-    conteudo = re.sub(r'\n\.','\n',conteudo)
-    conteudo = re.sub(r'\n ','\n',conteudo)
-    conteudo = re.sub(r'\r\n','\n',conteudo)
-    conteudo = re.sub(r'\n\n','\n',conteudo)
-    contextMarcos=conteudo
-    for lucas in mylistLucas:
-                    f = open(lucas, encoding="utf8")
-                    conteudo = re.sub(r'’|“|‘|”','',f.read())
-                    conteudo = re.sub(r'\d','',conteudo)
-                    conteudo = re.sub(r'\n\.','\n',conteudo)
-                    conteudo = re.sub(r'\n ','\n',conteudo)
-                    conteudo = re.sub(r'\r\n','\n',conteudo)
-                    conteudo = re.sub(r'\n\n','\n',conteudo)
-
-                    #print(conteudo)
-                    contextLucas = conteudo
-                    f.close()
-                    #if myItem in list:
-                    if (marcos+","+lucas) not in listamarcoslucas:
-                        similarity  = util.pytorch_cos_sim(model.encode(contextMarcos), model.encode(contextLucas))
-                        listamarcoslucas.append(marcos+","+lucas)
-                        if similarity > simvalue:
-                            print(marcos+","+lucas+" -  Similarity:", similarity) 
-                            for i in range(0,len(listaversiculos)):
-                                if marcos in listaversiculos[i] and  lucas not in listaversiculos[i]:
-                                    listaversiculos[i]= listaversiculos[i]+","+lucas
-                                    encontrou=1
-                                if lucas in listaversiculos[i] and  marcos not in listaversiculos[i]: 
-                                    listaversiculos[i]= listaversiculos[i]+","+marcos
-                                    encontrou=1
-                            if encontrou==0:
-                                listaversiculos.append(marcos+","+lucas)
-                                
-for palavra in listaversiculos:
-    print(palavra)
+#topic_model.visualize_topics()
+#topic_model.visualize_distribution(probs[200], min_probability=0.015)
+#topic_model.visualize_hierarchy(top_n_topics=50)
+#topic_model.visualize_barchart(top_n_topics=5)
+#topic_model.visualize_heatmap(n_clusters='15', width=1000, height=1000)
+#topic_model.visualize_term_rank()
+similar_topics, similarity = topic_model.find_topics("pilatos", top_n=5)
+print (similar_topics)
+print (topic_model.get_topic(49))

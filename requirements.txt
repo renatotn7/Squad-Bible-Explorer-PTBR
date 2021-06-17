@@ -2,4 +2,13 @@ pytorch-transformers==1.1.0
 git+https://github.com/kmkurn/pytorch-crf.git@4cd79bc8af55fb0f34a2a39b2e38f0e71c208fd4#egg=pytorch_crf
 seqeval==0.0.12
 jsonlines==1.2.0
-scikit-learn==0.21.2
+scikit-learn
+sentence_transformers
+transformers
+nltk
+wordcloud
+umap-learn
+hdbscan
+pandas
+bertopic
+alive_progress
