@@ -13,31 +13,12 @@ import requests
 import pandas as pd
 
 # Make a GET request to the Sefaria API to retrieve all related texts to Genesis 2:2
-url = 'https://www.sefaria.org/api/texts/Genesis.2.2?commentary=1&context=0&versions=all&sheets=0&wrapLinks=1&language=en'
-response = requests.get(url)
-df = pd.read_json(json.dumps(response.json()))
-pring(df)
-# Filter out texts that do not have the fields 'text', 'collectiveTitle', 'title', 'chapter', 'verse'
-filtered_texts = [text for text in response.json() if all(key in text for key in ('text', 'collectiveTitle', 'title', 'chapter', 'verse'))]
-
-# Load the filtered texts into a pandas DataFrame
-df = pd.DataFrame(filtered_texts)
-print(df)
-# Add the columns 'Text', 'Comentator', 'Book', 'Chapter', 'Verse' if they are not None or NaN
-df['Text'] = df.text
-df['Comentator'] = df.collectiveTitle.map(lambda x: x.get("en"))
-df['Book'] = df.title
-df['Chapter'] = df.chapter
-df['Verse'] = df.verse
-
-# Display the DataFrame
-print(df)
-
-exit()
 dfra_csv = pd.read_csv("../Rashi_ot.csv")
 dfrb_csv = pd.read_csv("../Ramban_ot.csv")
 dfsf_csv = pd.read_csv("../Sforno_ot.csv")
 dfibn_csv = pd.read_csv("../Ibn_Ezra_ot.csv")
+dfonk_csv = pd.read_csv("../Onkelos_ot.csv")
+dfjon_csv = pd.read_csv("../Targum_Jonathan_ot.csv")
 
 # Função para extrair o texto de uma passagem específica da Bíblia
 def extrair_passagemnvi(livro, cap, ver):
@@ -133,9 +114,12 @@ def extrair_e_salvar(arquivosalvar,df):
         df['Capitulo'] = df['Capitulo'].astype(int)
 
         match = re.search(r'\(([^)]+)\)',df.at[index, "texto1"] )
-        if match:
-            number_between_parentheses = match.group(1)
-            df['Versiculo']=number_between_parentheses
+        strtexto = df.at[index, "texto1"]
+        try:
+            saida= strtexto.split(strtexto, '(')[1].split(')')[0]
+            df['Versiculo'] =saida
+        except:
+            df['Versiculo'] = df['Versiculo']
         df['Versiculo'] = df['Versiculo'].astype(int)
 
         merged_df = pd.merge(df[['Livro', 'Capitulo', 'Versiculo', 'texto1', 'nvi']],
@@ -150,13 +134,21 @@ def extrair_e_salvar(arquivosalvar,df):
         merged_df4 = pd.merge(merged_df3[['Livro', 'Capitulo', 'Versiculo', 'texto1', 'nvi', 'Rashi', 'Ramban', 'Sforno']],
                               dfibn_csv[['Ibn', 'Livro', 'Capitulo', 'Versiculo']],
                               on=['Livro', 'Capitulo', 'Versiculo'], how="left")
+        merged_df5 = pd.merge(
+            merged_df4[['Livro', 'Capitulo', 'Versiculo', 'texto1', 'nvi', 'Rashi', 'Ramban', 'Sforno','Ibn']],
+            dfonk_csv[['Onkelos', 'Livro', 'Capitulo', 'Versiculo']],
+            on=['Livro', 'Capitulo', 'Versiculo'], how="left")
+        merged_df6 = pd.merge(
+            merged_df5[['Livro', 'Capitulo', 'Versiculo', 'texto1', 'nvi', 'Rashi', 'Ramban', 'Sforno', 'Ibn','Onkelos']],
+            dfjon_csv[['Jonathan', 'Livro', 'Capitulo', 'Versiculo']],
+            on=['Livro', 'Capitulo', 'Versiculo'], how="left")
 
         # Salvando o arquivo resultante´
         #merged_df4.to_csv("resultadoKefa1.csv", index=False)
-        merged_df4.to_excel(arquivosalvar+'.xlsx', index=False)
+        merged_df6.to_excel(arquivosalvar+'.xlsx', index=False)
         melhoraxlsx(arquivosalvar)
-        merged_df4.sort_values(by=['Livro', 'Capitulo', 'Versiculo'], inplace=True)
-        merged_df4.to_excel(arquivosalvar+'_ordenado.xlsx', index=False)
+        merged_df6.sort_values(by=['Livro', 'Capitulo', 'Versiculo'], inplace=True)
+        merged_df6.to_excel(arquivosalvar+'_ordenado.xlsx', index=False)
         melhoraxlsx(arquivosalvar+'_ordenado')
 
         #df.to_csv(arquivosalvar, sep=';', encoding='utf-8', index=False)
@@ -340,37 +332,15 @@ def referencia(nomelivro,rangein):
 
         referencias.append(a_tag['data-bibleref'])
 
-   # print("** "+str(referencias))
-   # print("** "+str(strlinks))
-   # print("** "+str(siglas))
-    # Exibe a lista de referências
-   # print(referencias)
- #   for i in range(len(referencias)):
-#
- #       sigla = referencias[i].split('.')[0]
-  ##
-    #      referenciasfinal.append(referencias[i].replace(sigla, traducoes[sigla]) + ';'+ strlinks[i]+";" + siglas[i] +";"+sigla+";"+traducoes2[sigla]+","+referencias[i].split('.')[1]+","+referencias[i].split('.')[2]+",")
+     nome_arquivo = arquivointermediario
 
-          #referenciasfinal.append(sigla + ";" + f"/passage/?search={traducoesinv[sigla.split('.')[0]] + '.' + sigla.split('.')[1] + '.' + sigla.split('.')[2]}&version=OJB" + ";" + traducoesinv[sigla.split('.')[0]] + ";" + traducoes2[traducoesinv[sigla.split('.')[0]]] + "," + sigla.split('.')[1] + ',' + sigla.split('.')[2] + ",")
-     #   except:
-      #   print( 'nao achou')
-    #referencias=referenciasfinal
-    #print(referencias)
-    nome_arquivo = arquivointermediario
-
-    # Itera sobre as referências e substitui os pontos por \
-    #referencias = [referencia.split(";").replace(".", "/") for referencia in referencias]
-    #print (referencias)
-    # Salva as referências no arquivo
-    #with open(nome_arquivo, "w") as arquivo:
-      #  arquivo.write("\n".join(referencias))
 
     if True:
 
         # Itera sobre as referências e substitui os pontos por \
         referencias_expandidas = []
         for referencia in referencias:
-            referenciaalfa = referencia
+
             referencia=referencia.split(";")[0]
             if "-" in referencia:
                 referencia1,referencia2 = referencia.split("-")
@@ -388,7 +358,7 @@ def referencia(nomelivro,rangein):
                 referencias_expandidas.append(referencia)
 
         referencias_expandidas= list(set(referencias_expandidas))
-       # print(referencias_expandidas)
+
         versiculos =referencias_expandidas
         referencias_expandidasfinal = []
         versiculosfinal= []
@@ -487,7 +457,7 @@ def referencia(nomelivro,rangein):
 ##########################################################################
 
 # Executando a função principal
-#referencia('Kefa I',[1,2,3,4,5])
+referencia('Kefa I',[1,2,3,4,5])
 #exit()
 # Carregando arquivos CSV e PSV
 

@@ -8,7 +8,7 @@ import re
 import romanize3
 # abrindo o arquivo excel
 
-df = pd.read_excel('Hisgalus_output.xlsx')
+df = pd.read_excel('Kefa I_output.xlsx')
 
 print(df)
 # criando o documento word
@@ -83,6 +83,7 @@ def formata(str, paragrafo,rgb):
     return paragrafo;
         #run.font.color.rgb = RGBColor(0, 0, 255)
 # iterando pelas linhas do dataframe
+
 for index, row in df.iterrows():
     # adicionando a primeira linha com o livro, capítulo e versículo
     paragraph = document.add_paragraph(f'{row["Livro"]} {row["Capitulo"]}:{row["Versiculo"]}')
@@ -121,8 +122,18 @@ for index, row in df.iterrows():
         paragraph = formata(row["Ibn"], paragraph,RGBColor(30, 106, 57))
        # paragraph.runs[0].font.color.rgb = RGBColor(30, 106, 57)
         paragraph.add_run("(Ibn Ezra)")
+    if row["Onkelos"] != None and not pd.isna(row["Onkelos"]):
+        paragraph = document.add_paragraph()
+        paragraph = formata(row["Onkelos"], paragraph,RGBColor(30, 106, 57))
+       # paragraph.runs[0].font.color.rgb = RGBColor(30, 106, 57)
+        paragraph.add_run("(Onkelos)")
+    if row["Jonathan"] != None and not pd.isna(row["Jonathan"]):
+        paragraph = document.add_paragraph()
+        paragraph = formata(row["Jonathan"], paragraph,RGBColor(30, 106, 57))
+       # paragraph.runs[0].font.color.rgb = RGBColor(30, 106, 57)
+        paragraph.add_run("(Jonathan)")
 
 
 
 # salvando o documento
-document.save('Hisgalus_output.docx')
+document.save('Kefa I_output.docx')
